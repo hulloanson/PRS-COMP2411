@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION['login']) || $_SESSION['login']) {
+    header("Location: index.php");
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,8 +59,8 @@
                 <li><a href="work.php">Review</a></li>
                 <li><a href="decision.php">Decision</a></li>
                 <li class="inpage"><a href="search.php">Search paper</a></li>
-                <li><a href="#">TempButton 5</a></li>
-                <li><a href="#">TempButton 6</a></li>
+                <!--                >-->
+                <!--                -->
             </ul>
         </td>
         <td width="80%">
@@ -130,7 +136,7 @@
                     <td>Status</td>
                 </tr>
             </table>
-            <p>Note: show at most 2 author, et al. for 3 or more</p>
+
         </td>
     </tr>
 </table>

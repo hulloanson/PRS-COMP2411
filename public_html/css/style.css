@@ -324,3 +324,22 @@ p {
 .addMargin {
     margin-top: 0.5em;
 }
+
+.logout {
+    vertical-align: bottom;
+    overflow: visible;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #ff9933;
+    color: #ecf0f1;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logout:hover {
+    color: #1abc9c;
+}

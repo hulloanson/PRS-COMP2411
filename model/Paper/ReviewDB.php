@@ -106,15 +106,17 @@ class ReviewDB
                 AND Review_Record.reviewer_id = :reviewerId AND Paper.id = Author_Paper.paper_id
                 AND Author_Paper.author_id = Author.id";
         try {
-            $allResult = array();
+            $allResults = array();
             $result = array();
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":reviewerId", $reviewerId, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    array_push($allResult, $result);
+                    if (gettype($result) != 'boolean' && $result["paperTitle"] != null) {
+                        array_push($allResults, $result);
+                    }
                 }
-                return $allResult;
+                return $allResults;
             } else {
                 return -1;
             }

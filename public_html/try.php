@@ -5,5 +5,13 @@ include_once '../model/util/autoload.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-session_start();
-echo $_SESSION['login'];
+//$paperDB = new PaperDB();
+//$rows = $paperDB->getPaperToJudge();
+//var_dump($rows);
+
+//echo Decision::getPaperToJudgeRows();
+
+//$reviewDB = new ReviewDB();
+//$rows = $reviewDB->getReviewJobs(1);
+//var_dump($rows);
+

@@ -16,15 +16,14 @@ switch ($_POST["action"]) {
         } else {
             echo "invalid pw";
         }
-//        } else {
-//            echo 'lalalal';
-//        }
         break;
-    case "logout":
+    case "Logout":
         session_destroy();
+//        $originalPage = $_POST['original'];
         header('Location: work.php');
         exit;
         break;
+
     default:
         break;
 }

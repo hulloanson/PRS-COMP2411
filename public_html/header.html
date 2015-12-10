@@ -1,0 +1,62 @@
+<div id="wrap">
+    <div id="regbar">
+        <table width="1200px" class="tableCentre">
+            <tr>
+                <td width="90%">
+                    <div id="leftmargin"><h2>Paper Review System</h2></div>
+                </td>
+                <td align="right">
+                    <div id="rightmargin">
+                        <?php
+                        session_start();
+                        if ($_SESSION['login'] == true) {
+                            ?>
+                        <form action="router.php" method="post">
+                            <input name="original" value="work" style="display: none"/>
+                            <input name="action" value="Logout" class="logout" type="submit"/>
+                        </form>
+
+                        <?php
+                        } else {
+                            ?>
+                        <h2><a href='#' id="loginform">Login</a></h2>
+                        <?php
+                        }
+                        ?>
+                </td>
+            <tr>
+                <td><p>&nbsp </p></td>
+                <td>
+                    <div class="login">
+                        <div class="arrow-up"></div>
+                        <div class="formholder">
+                            <div class="randompad">
+                                <?php
+                                if (!isset($_SESSION['login']) or !$_SESSION['login']) {
+                                    ?>
+                                <form action="router.php" method="post">
+                                    <fieldset>
+                                        <label name="email">Email</label>
+                                        <input type="email" name="email"/>
+                                        <label name="password">Password</label>
+                                        <input type="password" name="password"/>
+                                        <input type="submit" value="Login"/>
+                                        <input name="action" value="login" style="display: none"/>
+                                    </fieldset>
+                                </form>
+                                <?php
+                                } else {
+                                    ?>
+                                <h2>HI</h2>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+    </td></tr>
+
+    </table>
+</div>
+</div>

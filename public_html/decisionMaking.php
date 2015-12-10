@@ -53,8 +53,7 @@
                 <li><a href="work.php">Review</a></li>
                 <li><a href="decision.php">Decision</a></li>
                 <li><a href="search.php">Search paper</a></li>
-                <li><a href="#">TempButton 5</a></li>
-                <li><a href="#">TempButton 6</a></li>
+
             </ul>
         </td>
         <td width="80%">
@@ -83,17 +82,20 @@
                 </tr>
                 <tr>
                     <th><p>Download</p></th>
-                    <td><a href="#"><img src="download.png" width="42" height="42" border"0"><font color="1a1aff"><u>Click
+                    <td><a href="Neuro_fuzzy.txt" download><img src="download.png" width="42" height="42"
+                                                                border"0"><font color="1a1aff"><u>Click
                                     here to download</u></a></td>
                 </tr>
                 <tr>
                     <th rowspan="2"><p>Review</p></th>
-                    <td><a href="#"><img src="download.png" width="42" height="42" border"0"><font color="1a1aff"><u>Review
+                    <td><a href="review1.txt" download><img src="download.png" width="42" height="42" border"0"><font
+                                color="1a1aff"><u>Review
                                     1</u></a>
                     </td>
                 </tr>
                 <tr>
-                    <td><a href="#"><img src="download.png" width="42" height="42" border"0"><font color="1a1aff"><u>Review
+                    <td><a href="review2.txt" download><img src="download.png" width="42" height="42" border"0"><font
+                                color="1a1aff"><u>Review
                                     2</u></a></td>
                 </tr>
                 <tr>

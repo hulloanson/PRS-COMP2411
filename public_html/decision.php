@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION['login'])) {
+    header("Location: index.php");
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,58 +59,37 @@
                 <li><a href="work.php">Review</a></li>
                 <li class="inpage"><a href="decision.php">Decision</a></li>
                 <li><a href="search.php">Search paper</a></li>
-                <li><a href="#">TempButton 5</a></li>
-                <li><a href="#">TempButton 6</a></li>
+
+
             </ul>
         </td>
         <td width="80%">
-            <p>&nbsp </p>
-
-            <h1>Paper waiting for final decision</h1>
-
-            <p>&nbsp </p>
-            <!-- if no -->
-            <p> if no work </p>
-
-            <p> [Text message] No paper in waiting queue. Come back later.</p>
-            <!-- if yes-->
-            <p>&nbsp </p>
-
-            <p> else </p>
             <table width="100%" class="table3">
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Type</th>
-                    <th>Status</th>
                 </tr>
+                <?php
+                error_reporting(E_ALL);
+                ini_set('display_errors', 1);
+                include_once '../model/util/autoload.php';
+                $rows = Decision::getPaperToJudgeRows();
+                if (!empty($rows)) {
+                    echo $rows;
+                } else {
+//                    echo "No paper in waiting queue. Come back later ^^";
+                }
+                ?>
                 <tr>
-                    <td><a href="decisionMaking.php"><u>ASFWQFSACFWFCWQFCWQCFQWCFQW</u></a></td>
-                    <td>Author</td>
-                    <td>Type</td>
-                    <td>Status</td>
-                </tr>
-                <tr>
-                    <td><a href="decisionMaking.php"><u>ASFWQFSACFWFCWQFCWQCFQWCFQWASFWQFSACFWFCWQFCWQCFQWCFQW</u></a>
-                    </td>
-                    <td>Author</td>
-                    <td>Type</td>
-                    <td>Status</td>
-                </tr>
-                <tr>
-                    <td><a href="decisionMaking.php"><u>ASFWQWCFQWASFWQFSACFWFCWQFCWQCFQWCFQW</u></a></td>
-                    <td>Author</td>
-                    <td>Type</td>
-                    <td>Status</td>
-                </tr>
-                <tr>
-                    <td><a href="decisionMaking.php"><u>ASFWQFSACFWFCWQFCWQCFQWCFQW</u></a></td>
-                    <td>Author</td>
-                    <td>Type</td>
-                    <td>Status</td>
+                    <td><a href="decisionMaking.php">Neuro-fuzzy and soft computing; a computational approach to
+                            learning and
+                            machine intelligence</a></td>
+                    <td>Jang, J.S.R., Sun, C.T. and Mizutani, E.</td>
+                    <td>Abstract</td>
                 </tr>
             </table>
-            <p>Note: show at most 2 author, et al. for 3 or more</p>
+
         </td>
     </tr>
 </table>

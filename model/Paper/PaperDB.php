@@ -451,12 +451,14 @@ class PaperDB
                 Submission.type AS 'submitType'
                 FROM Paper, Author, Author_Paper, Submission
                 WHERE Submission.paper_id = Paper.id AND Paper.id = Author_Paper.paper_id
-                AND Author.id = Author_Paper.author_id";
+                AND Author.id = Author_Paper.author_id AND Submission.reviewStatus = 1";
         try {
             $stmt = $this->conn->prepare($sql);
             if ($stmt->execute()) {
                 while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    array_push($allResults, $result);
+                    if (gettype($result) != 'boolean' && $result["paperTitle"] != null) {
+                        array_push($allResults, $result);
+                    }
                 }
                 return $allResults;
             } else {

@@ -1,3 +1,8 @@
+//session_start();
+//if (!isset($_SESSION['login']) || $_SESSION['login']) {
+//    header("Location: index.php");
+//}
+<!--?>-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,8 +58,7 @@
                 <li><a href="work.php">Review</a></li>
                 <li><a href="decision.php">Decision</a></li>
                 <li><a href="search.php">Search paper</a></li>
-                <li><a href="#">TempButton 5</a></li>
-                <li><a href="#">TempButton 6</a></li>
+
             </ul>
         </td>
         <td width="80%">
@@ -83,7 +87,8 @@
                 </tr>
                 <tr>
                     <th><p>Download</p></th>
-                    <td><a href="#"><img src="download.png" width="42" height="42" border"0"><font color="1a1aff"><u>Click
+                    <td><a href="Neuro_fuzzy.txt" download><img src="download.png" width="42" height="42"
+                                                                border"0"><font color="1a1aff"><u>Click
                                     here to download</u></a></td>
                 </tr>
                 <tr>
@@ -91,6 +96,7 @@
                     <td>
                         <form action="upload.php" method="post" enctype="multipart/form-data">
                             <p>Select file to upload:</p>
+                            <!--                            <input name="action" value=""-->
                             <input type="file" name="fileToUpload" id="fileToUpload"
                                    accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain">
                             <input type="submit" value="Upload review" name="submit">

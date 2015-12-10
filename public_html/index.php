@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,8 +54,7 @@
 				<li><a href="work.php">Review</a></li>
 				<li><a href="decision.php">Decision</a></li>
 				<li><a href="search.php">Search paper</a></li>
-				<li><a href="#">TempButton 5</a></li>
-				<li><a href="#">TempButton 6</a></li>
+
 			</ul>
 		</td>
 		<td width="80%">

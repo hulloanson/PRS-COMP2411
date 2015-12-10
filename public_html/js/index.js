@@ -1,7 +1,7 @@
-$('input[type="submit"]').mousedown(function(){
+$('input[type="submit"][value!="Logout"]').mousedown(function () {
   $(this).css('background', '#2ecc71');
 });
-$('input[type="submit"]').mouseup(function(){
+$('input[type="submit"][value!="Logout"]').mouseup(function () {
   $(this).css('background', '#1abc9c');
 });
 
