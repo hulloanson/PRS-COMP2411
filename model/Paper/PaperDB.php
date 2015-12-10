@@ -435,7 +435,7 @@ class PaperDB
                 $this->conn->commit();
 
                 $assignReviewJob = new ReviewDB();
-                $assignReviewJob->assignReviewJob($submissionId);
+                return $assignReviewJob->assignReviewJob($submissionId);
             } else {
                 return -1;
             }
@@ -444,6 +444,28 @@ class PaperDB
         }
     }
 
+    function getPaperToJudge()
+    {
+        $allResults = array();
+        $sql = "SELECT Paper.title AS 'paperTitle', group_concat(Author.name) AS 'authorsName',
+                Submission.type AS 'submitType'
+                FROM Paper, Author, Author_Paper, Submission
+                WHERE Submission.paper_id = Paper.id AND Paper.id = Author_Paper.paper_id
+                AND Author.id = Author_Paper.author_id";
+        try {
+            $stmt = $this->conn->prepare($sql);
+            if ($stmt->execute()) {
+                while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($allResults, $result);
+                }
+                return $allResults;
+            } else {
+                return -1;
+            }
+        } catch (PDOException $e) {
+            return -1;
+        }
+    }
 }
 
 

@@ -6,7 +6,6 @@ ini_set('display_errors', 1);
 include_once "../model/util/autoload.php";
 
 
-
 class ReviewDB
 {
     private $conn;
@@ -166,35 +165,25 @@ class ReviewDB
     private function decideReviewStatus($submissionId)
     {
         //Update Submission's review status if all 3 reviews has been done.
-        $submissionSql = "UPDATE Submission
-                SET reviewStatus = if((SELECT avg(rating) FROM Review_Record
-                                       WHERE submission_id = :submissionId) >= 5, 1, 2)
-                WHERE id IN (SELECT submission_id FROM Review_Record
-                             WHERE submission_id = :submissionId AND completed = TRUE AND COUNT(*) = 3);";
+        $submissionSql = "UPDATE Submission SET reviewStatus = 1
+                          WHERE id IN (SELECT submission_id FROM Review_Record
+                          WHERE submission_id = :submissionId AND completed = TRUE AND COUNT(*) = 3);";
 
-        //Update Paper's status if reviewStatus is 1 or 2
-        $acceptSql = "UPDATE Paper SET status = (if((SELECT reviewStatus FROM Submission AS SUB
-                                             WHERE reviewStatus = 1),
+        //Update Paper's status if reviewStatus is 1
+        $acceptSql = "UPDATE Paper SET status = (if((SELECT reviewStatus FROM Submission WHERE reviewStatus = 1),
                                              Submission.reviewStatus + Submission.type * 10, Paper.status))
                  WHERE Paper.id = Submission.paper_id AND Submission.id = :submissionId;";
 
-        $rejectSql = "UPDATE Paper SET status = (if((SELECT reviewStatus FROM Submission AS SUB
-                                             WHERE reviewStatus = 2),
-                                             Submission.reviewStatus + Submission.type * 10, Paper.status))
-                 WHERE Paper.id = Submission.paper_id AND Submission.id = :submissionId;";
         try {
             $this->conn->beginTransaction();
 
             $submissionStmt = $this->conn->prepare($submissionSql);
             $acceptStmt = $this->conn->prepare($acceptSql);
-            $rejectStmt = $this->conn->prepare($rejectSql);
 
             $submissionStmt->bindValue(":submissionID", $submissionId, PDO::PARAM_INT);
             $submissionStmt->execute();
             $acceptStmt->bindValue(":submissionID", $submissionId, PDO::PARAM_INT);
             $acceptStmt->execute();
-            $rejectStmt->bindValue(":submissionID", $submissionId, PDO::PARAM_INT);
-            $rejectStmt->execute();
 
             $this->conn->commit();
 

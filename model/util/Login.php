@@ -17,7 +17,7 @@ class Login
         try {
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":email", $email);
-            $stmt->bindValue(":password", $password);
+            $stmt->bindValue(":passwordd", $password);
             if ($stmt->execute()) {
                 $stmt->bindColumn("matched", $matched, PDO::PARAM_BOOL);
                 if ($stmt->fetch(PDO::FETCH_BOUND)) {

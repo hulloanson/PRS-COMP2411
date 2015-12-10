@@ -18,9 +18,13 @@
                 <td align="right">
                     <div id="rightmargin">
                         <?php
-                        if ($_COOKIE['logined']) {
+                        session_start();
+                        if ($_SESSION['login'] == true) {
                             ?>
-                            <h2>Hi, XX</h2>
+                            <form action="router.php" method="post">
+                                <input name="action" value="logout" type="submit"/>
+                            </form>
+
                             <?php
                         } else {
                             ?>
@@ -36,16 +40,26 @@
                         <div class="arrow-up"></div>
                         <div class="formholder">
                             <div class="randompad">
-                                <form action="router.php" method="post">
-                                <fieldset>
+                                <?php
+                                if (!isset($_SESSION['login']) or !$_SESSION['login']) {
+                                    ?>
+                                    <form action="router.php" method="post">
+                                        <fieldset>
                                     <label name="email">Email</label>
-                                    <input type="email"/>
+                                            <input type="email" name="email"/>
                                     <label name="password">Password</label>
-                                    <input type="password"/>
+                                            <input type="password" name="password"/>
                                     <input type="submit" value="Login"/>
-
-                                </fieldset>
-                                </form>
+                                            <input name="action" value="login" style="display: none"/>
+                                        </fieldset>
+                                    </form>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <h2>HI</h2>
+                                    <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -61,12 +75,12 @@
     <tr>
         <td>
             <ul>
-                <li class = "navItem"><a href="index.php"><font color="000000" size="4">Home</a></li>
-                <li class="inpage navItem"><a href="work.php"><font color="000000">Review</a></li>
-                <li class = "navItem"><a href="decision.php"><font color="000000">Decision</a></li>
-                <li class = "navItem"><a href="search.php"><font color="000000">Search paper</a></li>
-                <li class = "navItem"><a href="#"><font color="000000">TempButton 5</a></li>
-                <li class = "navItem"><a href="#"><font color="000000">TempButton 6</a></li>
+                <li><a href="index.php">Home</a></li>
+                <li class="inpage"><a href="work.php">Review</a></li>
+                <li><a href="decision.php">Decision</a></li>
+                <li><a href="search.php">Search paper</a></li>
+                <li><a href="#">TempButton 5</a></li>
+                <li><a href="#">TempButton 6</a></li>
             </ul>
         </td>
         <td width="80%">

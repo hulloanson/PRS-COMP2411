@@ -49,12 +49,12 @@
 	<tr>
 		<td>
 			<ul>
-				<li class="inpage navItem"><a href="index.php">Home</a></li>
-				<li class="navItem"><a href="work.php">Review</a></li>
-				<li class="navItem"><a href="decision.php">Decision</a></li>
-				<li class="navItem"><a href="search.php">Search paper</a></li>
-				<li class="navItem"><a href="#">TempButton 5</a></li>
-				<li class="navItem"><a href="#">TempButton 6</a></li>
+				<li class="inpage"><a href="index.php">Home</a></li>
+				<li><a href="work.php">Review</a></li>
+				<li><a href="decision.php">Decision</a></li>
+				<li><a href="search.php">Search paper</a></li>
+				<li><a href="#">TempButton 5</a></li>
+				<li><a href="#">TempButton 6</a></li>
 			</ul>
 		</td>
 		<td width="80%">
