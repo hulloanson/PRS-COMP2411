@@ -1,0 +1,122 @@
+/* app css stylesheet */
+
+.menu {
+    list-style: none;
+    border-bottom: 0.1em solid black;
+    margin-bottom: 2em;
+    padding: 0 0 0.5em;
+}
+
+.menu:before {
+    content: "[";
+}
+
+.menu:after {
+    content: "]";
+}
+
+.menu > li {
+    display: inline;
+}
+
+.menu > li:before {
+    content: "|";
+    padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+    content: "";
+    padding: 0;
+}
+
+.header {
+    margin-top: 2.5rem;
+}
+
+.navbar {
+    /*margin-top:1.5rem;*/
+    margin-bottom:0.5rem;
+}
+
+.navbar div :hover{
+    color: rgba(100,0,0,0.5);
+}
+
+.content {
+    margin-top: 3rem;
+}
+
+hr.style-six {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top:0;
+    margin-bottom: 0;
+}
+
+.no-horizontal-margin {
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.centered {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.search-snippet {
+    width:80%;
+}
+
+.login-snippet {
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.horizontal-margin {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.top-margin {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.bottom-margin {
+    margin-bottom:1rem;
+    margin-top: 0;
+}
+
+.underline-text {
+    text-decoration: underline;
+}
+
+.sub-heading {
+    width:100%;
+    font-size: 2rem;
+}
+
+.float-right {
+    margin-right:0;
+    margin-left:auto;
+}
+
+.float-left {
+    margin-left:0;
+    margin-right:auto;
+}
+
+.no-left-margin {
+    margin-left:0;
+}
+
+.result-heading {
+    font-weight: bolder;
+}

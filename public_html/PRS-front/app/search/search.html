@@ -1,0 +1,37 @@
+<div class="full-width" ng-controller="searchCtrl">
+    <div class="search-snippet container">
+        <div class="row">
+            <div class="twelve columns">
+                <div class="sub-heading">Search</div>
+            </div>
+        </div>
+        <hr class="style-six">
+        <form class="container" style="width: 100%">
+            <div class="horizontal-margin row">
+                <div class="three columns">Search Keyword:</div>
+                <div class="no-left-margin six columns"><input type="text" style="width: 100%"/></div>
+                <div class="three columns"><input class="button-primary" type="submit" value="Search"/></div>
+            </div>
+        </form>
+        <div class="result-panel">
+            <div class="sub-heading">Search results</div>
+            <hr class="style-six">
+            <div class="bottom-margin full-width container">
+                <div class="margin-bottom row result-heading">
+                    <div class="five columns">Title</div>
+                    <div class="three columns">Authors</div>
+                    <div class="two columns">Progress</div>
+                    <div class="two columns">Status</div>
+                </div>
+            </div>
+            <div class="result-content full-width container">
+                <div class="result-row row" ng-repeat="row in searchResults">
+                    <div class="five columns" ng-bind="row.title"></div>
+                    <div class="three columns" ng-bind="row.authors"></div>
+                    <div class="two columns" ng-bind="row.progress"></div>
+                    <div class="two columns" ng-bind="row.status"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

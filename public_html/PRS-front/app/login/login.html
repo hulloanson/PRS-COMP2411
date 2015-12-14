@@ -1,0 +1,24 @@
+<div class="full-width">
+    <div class="login-snippet container" ng-controller="loginCtrl">
+        <div class="row">
+            <div class="twelve columns">
+                <div class="sub-heading">Login</div>
+            </div>
+        </div>
+        <hr class="style-six">
+        <form class="container" style="width: 100%">
+            <span ng-bind="tokenIsEmpty"></span>
+            <div class="horizontal-margin row">
+                <div class="three columns">Email:</div>
+                <div class="nine columns"><input type="text" style="width: 80%"/></div>
+            </div>
+            <div class="horizontal-margin row">
+                <div class="three columns">Password:</div>
+                <div class="nine columns"><input type="password" style="width: 80%"/></div>
+            </div>
+            <div class="horizontal-margin row">
+                <div class="float-right" style="width: 50%; text-align: center"><input class="button-primary" type="submit" value="Login"/></div>
+            </div>
+        </form>
+    </div>
+</div>
