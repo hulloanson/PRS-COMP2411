@@ -19,7 +19,7 @@ class PrivilegedUser extends User
         $reviewerSql = "INSERT INTO Reviewer (id) VALUES (:accId)";
 
         if (!empty($reviewer['areas'])) {
-            $areaSql = "INSERT INTO Reviewer_Area (area_id, reviewer_id) VALUES";
+            $areaSql = "INSERT INTO Account_Area (area_id, acc_id) VALUES";
 
             for ($i = 0; $i < sizeof($reviewer['areas']); $i++) {
                 if ($i != 0) {
@@ -32,7 +32,7 @@ class PrivilegedUser extends User
         }
 
         if (!empty($reviewer['organisations'])) {
-            $orgSql = "INSERT INTO Reviewer_Organisation (organisation_id, reviewer_id) VALUES";
+            $orgSql = "INSERT INTO Account_organisation (org_id, acc_id) VALUES";
 
             for ($i = 0; $i < sizeof($reviewer['organisations']); $i++) {
                 if ($i != 0) {

@@ -3,6 +3,12 @@
 
 class Util
 {
+
+    static function jsonToArray($json)
+    {
+        return json_decode($json);
+    }
+
     static function guidv4()
     {
         $data = openssl_random_pseudo_bytes( 16 );
@@ -31,5 +37,10 @@ class Util
     {
         $booll = boolval($bool);
         return ($booll == true ? 'Yes' : 'No');
+    }
+
+    function base64ToFile($base64String)
+    {
+
     }
 }

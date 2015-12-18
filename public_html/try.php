@@ -2,10 +2,11 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('memory_limit', 100 * 1024 * 1024);
 
-include_once '../util/Util.php';
-include_once '../util/DBHelper.php';
-
+//include_once '../util/Util.php';
+//include_once '../util/DBHelper.php';
+//
 //$paperDB = new PaperDB();
 //$rows = $paperDB->getPaperToJudge();
 //var_dump($rows);
@@ -16,33 +17,41 @@ include_once '../util/DBHelper.php';
 //$rows = $reviewDB->getReviewJobs(1);
 //var_dump($rows);
 
-$sql = "INSERT INTO Session (id, user_id, issued_time) VALUES (UNHEX(:token), 1, NOW())
-                ON DUPLICATE KEY UPDATE id = :token AND issued_time = now();";
-
-$token = Util::guidv4();
-
-try {
-
-    $stmt = DBHelper::getConnection()->prepare($sql);
-
-    $stmt->bindValue(":token", $token);
-
-    if ($stmt->execute()) {
-        echo $stmt->rowCount();
-    } else {
-        echo -1;
-    }
-
-} catch (PDOException $e) {
-    return -1;
-}
+//$sql = "INSERT INTO Session (id, user_id, issued_time) VALUES (UNHEX(:token), 1, NOW())
+//                ON DUPLICATE KEY UPDATE id = :token AND issued_time = now();";
+//
+//$token = Util::guidv4();
+//
+//try {
+//
+//    $stmt = DBHelper::getConnection()->prepare($sql);
+//
+//    $stmt->bindValue(":token", $token);
+//
+//    if ($stmt->execute()) {
+//        echo $stmt->rowCount();
+//    } else {
+//        echo -1;
+//    }
+//
+//} catch (PDOException $e) {
+//    return -1;
+//}
 //if (!0) {
 //    echo "false";
 //} else {
 //    echo "true";
 //}
 
-//echo json_encode(12);
+//if (isset($_FILES['userfile']['name'])) {
+//    echo "got it.";
+//} else {
+//    echo "huh?";
+//}
+
+$str = base64_encode(str_repeat('a', 32 * 1024 * 1024));
+
+echo (strlen($str) / 1024 / 1024) / (strlen());
 
 //echo json_encode("paragraph");
 

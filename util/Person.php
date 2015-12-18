@@ -1,8 +1,15 @@
 <?php
 
 
-class LoginHandler extends DB
+class Person extends DB
 {
+    private $role_id;
+
+    function __construct()
+    {
+        parent::__construct();
+    }
+
     function assignToken($email, $password) {
         $matched = $this->credMatch($email, $password);
         if ($matched > 0) {
@@ -41,9 +48,9 @@ class LoginHandler extends DB
             $stmt->bindValue(":token", $token);
 
             if ($stmt->execute()) {
-                $stmt->bindColumn("role", $role, PDO::PARAM_INT);
+                $stmt->bindColumn("role", $this->role_id, PDO::PARAM_INT);
                 if ($stmt->fetch(PDO::FETCH_BOUND)) {
-                    return $role;
+                    return true;
                 } else {
                     return 0;
                 }
@@ -70,6 +77,50 @@ class LoginHandler extends DB
                     return $matched;
                 } else {
                     return -1;
+                }
+            } else {
+                return -1;
+            }
+        } catch (PDOException $e) {
+            return -1;
+        }
+    }
+
+    function isConferenceManager()
+    {
+        return ($this->role_id == 4);
+    }
+
+    function isReviewer()
+    {
+        return ($this->role_id === 1);
+    }
+
+    function isConferenceChair()
+    {
+        return ($this->role_id == 3);
+    }
+
+    function isTrackChair()
+    {
+        return ($this->role_id == 2);
+    }
+
+    function tokenToUserId($token)
+    {
+        $sql = "SELECT user_id FROM Session WHERE id = UNHEX(:token)";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->bindValue(":token", $token);
+
+            if ($stmt->execute()) {
+                $stmt->bindColumn("user_id", $userId, PDO::PARAM_INT);
+                if ($stmt->fetch(PDO::FETCH_BOUND)) {
+                    return $userId;
+                } else {
+                    return 0;
                 }
             } else {
                 return -1;

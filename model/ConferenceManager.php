@@ -223,7 +223,8 @@ class ConferenceManager extends PrivilegedUser
 
     }
 
-    function assignReviewJob($submissionId, $reviewerIds) {
+    function assignReviewJob($submissionId, $reviewerIds)
+    {
         if (gettype($reviewerIds) != 'array') {
             return -1;
         } else {
@@ -257,5 +258,25 @@ class ConferenceManager extends PrivilegedUser
         } catch (PDOException $e) {
             return -1;
         }
+    }
+
+    function addTrackChair()
+    {
+
+    }
+
+    function removeTrackChair()
+    {
+
+    }
+
+    function addConferenceChair()
+    {
+
+    }
+
+    function removeConferenceChair()
+    {
+
     }
 }
