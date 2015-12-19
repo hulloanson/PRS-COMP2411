@@ -166,4 +166,71 @@ class PrivilegedUser extends User
         }
     }
 
+    function getREviewRecords($arrayOfContents)
+    {
+        $sql = "SELECT Review_Record_View.paper_id AS 'paper_id',
+		Review_Record_View.paper_title AS 'paper_title',
+		Review_Record_View.authors_name AS 'authors_name',
+		Review_Record_View.submission_id AS 'submission_id',
+		Review_Record_View.review_id AS 'review_id',
+		Review_Record_View.reviewer_id AS 'reviewer_id',
+		Review_Record_View.reviewer_name AS 'reviewer_name',
+		Review_Record_View.rating AS 'rating',
+		Review_Record_View.assigned_time AS 'assigned_time',
+		Review_Record_View.completed AS 'completed',
+		Review_Record_View.completed_time AS 'completed_time'
+			FROM Review_Record_View
+			WHERE Review_Record_View.invalidated = 0";
+
+        if (isset($arrayOfContents['reviewer_name'])) {
+            $sql .= "AND reviewer_name = :reviewer_name ";
+        }
+
+        if (isset($arrayOfContents['paper_title'])) {
+            $sql .= "AND paper_title = :paper_title ";
+        }
+
+        if (isset($arrayOfContents['assigned_timeBefore'])) {
+            $sql .= "AND assigned_time = :before BETWEEN :after ";
+        }
+
+        if (isset($arrayOfContents['completed'])) {
+            $sql .= "AND completed = :completed ";
+        }
+        $sql .= ";";//end of creating sql statement
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            //binding values if isset() is true
+            if (isset($arrayOfContents['reviewer_name'])) {
+                $stmt->bindValue(":reviewer_name", $arrayOfContents['reviewer_name']);
+            }
+            if ($arrayOfContents['paper_title']) {
+                $stmt->bindValue(":paper_title", $arrayOfContents['paper_title']);
+            }
+            if ($arrayOfContents['assigned_timeBefore']) {
+                $stmt->bindValue(":before", $arrayOfContents['assigned_timeBefore']);
+                $stmt->bindValue(":after", $arrayOfContents['assigned_timeAfter']);
+            }
+            if ($arrayOfContents['completed']) {
+                $stmt->bindValue(":completed", $arrayOfContents['completed'], PDO::PARAM_BOOL);
+            }
+
+            //finishing binding
+            if ($stmt->execute()) {
+                while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    if (gettype($result) != 'boolean' && $result["paper_title"] != null) {
+                        array_push($allResults, $result);
+                    }
+                }
+                return $allResults;
+            } else {
+                return -1;
+            }
+
+        } catch (PDOException $e) {
+            return -1;
+        }
+    }
+
 }

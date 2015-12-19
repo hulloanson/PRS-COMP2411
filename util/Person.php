@@ -97,6 +97,8 @@ class Person extends DB
         if ($result == true and $this->role_id == 4) {
             $confManger = new ConferenceManager($this->user_id);
             return $confManger;
+        } elseif ($result == 2 or $result == 3 or $result == 1) {
+            return PRSErr::INCORRECT_CONTENT;
         } else {
             return $result;
         }
@@ -104,8 +106,11 @@ class Person extends DB
 
     function getReviewer($token)
     {
-        if ($result = $this->getRole($token) == 1) {
+        $result = $this->getRole($token);
+        if ($result == true and $this->role_id == 1) {
             return new Reviewer($this->user_id);
+        } elseif ($result == 2 or $result == 3 or $result == 4) {
+            return PRSErr::NOTHING_FOUND;
         } else {
             return $result;
         }
@@ -113,8 +118,11 @@ class Person extends DB
 
     function getTrackChair($token)
     {
-        if ($result = $this->getRole($token) == 2) {
+        $result = $this->getRole($token);
+        if ($result == true and $this->role_id == 2) {
             return new TrackChair($this->user_id);
+        } elseif ($result == 1 or $result == 3 or $result == 4) {
+            return PRSErr::INCORRECT_CONTENT;
         } else {
             return $result;
         }
@@ -122,8 +130,11 @@ class Person extends DB
 
     function getConferenceChair($token)
     {
-        if ($result = $this->getRole($token) == 3) {
-            return new TrackChair($token);
+        $result = $this->getRole($token);
+        if ($result == true and $this->role_id == 3) {
+            return new ConferenceChair($this->user_id);
+        } elseif ($result == 2 or $result == 1 or $result == 4) {
+            return PRSErr::INCORRECT_CONTENT;
         } else {
             return $result;
         }

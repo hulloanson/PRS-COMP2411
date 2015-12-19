@@ -558,7 +558,7 @@ class User extends DB
 
     function getOwnInformation()
     {
-        return array(
+        $result = array(
             'email' => $this->getOwnEmail(),
             'role' => $this->getOwnRole(),
             'title' => $this->getOwnTitle(),
@@ -572,5 +572,15 @@ class User extends DB
             'city' => $this->getOwnCity(),
             'country' => $this->getOwnCountry()
         );
+        $error = null;
+
+        foreach ($result as $item) {
+            if ($item === PRSErr::NOTHING_FOUND or $item === PRSErr::DB_ERR) {
+                $error = $item;
+                return $error;
+            }
+        }
+
+        return $result;
     }
 }

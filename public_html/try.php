@@ -86,10 +86,18 @@ ini_set('memory_limit', 100 * 1024 * 1024);
 //        break;
 //}
 
-$submissionProps = array("file", "fileMime", "paperId");
+//$submissionProps = array("file", "fileMime", "paperId");
+//
+//sort($submissionProps);
+//var_dump($submissionProps);
 
-sort($submissionProps);
-var_dump($submissionProps);
+//$lamer = array("ABC","BCD");
+//
+//var_dump(array_keys($lamer));
+
+$object = array("error" => 1);
+
+echo json_encode($object);
 
 //echo json_encode("paragraph");
 
