@@ -556,28 +556,6 @@ class User extends DB
         }
     }
 
-
-    // Please use role id to set the role
-    function setOwnRole($value)
-    {
-        $sql = "UPDATE Account SET role_id = :valuee WHERE id = :accId";
-
-        try {
-            $stmt = $this->conn->prepare($sql);
-
-            $stmt->bindValue(":valuee", $value, PDO::PARAM_INT);
-            $stmt->bindValue(":accId", $this->userId, PDO::PARAM_INT);
-
-            if ($stmt->execute()) {
-                return $stmt->rowCount();
-            } else {
-                return -1;
-            }
-        } catch (PDOException $e) {
-            return -1;
-        }
-    }
-
     function getOwnInformation()
     {
         return array(

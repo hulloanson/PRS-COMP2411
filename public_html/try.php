@@ -49,9 +49,47 @@ ini_set('memory_limit', 100 * 1024 * 1024);
 //    echo "huh?";
 //}
 
-$str = base64_encode(str_repeat('a', 32 * 1024 * 1024));
+//$str = base64_encode(str_repeat('a', 32 * 1024 * 1024));
+//
+//echo (strlen($str) / 1024 / 1024) / (strlen());
 
-echo (strlen($str) / 1024 / 1024) / (strlen());
+
+//$authors = array("one" => "ABC", "BCD");
+//
+//$authors_seq = array("ABC", "BCD");
+//
+//var_dump(isAssoc($authors));
+//
+//var_dump(isAssoc($authors_seq));
+//
+//var_dump(isAssoc(1));
+//
+//$lamer = "X";
+//$n = true;
+//$x = true;
+//
+//switch ($lamer) {
+//    case "Y":
+//        echo "kai";
+//        break;
+//    case "X":
+//        if ($n) {
+//            echo "shit!";
+//            break;
+//        }
+//        if ($x) {
+//            echo "omg!";
+//        }
+//        break;
+//    default:
+//        echo "eh.";
+//        break;
+//}
+
+$submissionProps = array("file", "fileMime", "paperId");
+
+sort($submissionProps);
+var_dump($submissionProps);
 
 //echo json_encode("paragraph");
 

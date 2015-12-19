@@ -107,7 +107,7 @@ class PrivilegedUser extends User
                 }
             }
 
-            return $rowCount;
+            return $reviewerId;
 
         } catch (PDOException $e) {
             $this->conn->rollBack();

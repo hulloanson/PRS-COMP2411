@@ -4,6 +4,7 @@
 class Person extends DB
 {
     private $role_id;
+    private $user_id;
 
     function __construct()
     {
@@ -39,7 +40,7 @@ class Person extends DB
     }
 
     function getRole($token) {
-        $sql = "SELECT role_id as 'role' FROM Session, Account
+        $sql = "SELECT Session.user_id as 'user_id', Account.role_id as 'role_id' FROM Session, Account
                 WHERE Session.id = UNHEX(:token) AND Account.id = Session.user_id;";
 
         try {
@@ -48,7 +49,8 @@ class Person extends DB
             $stmt->bindValue(":token", $token);
 
             if ($stmt->execute()) {
-                $stmt->bindColumn("role", $this->role_id, PDO::PARAM_INT);
+                $stmt->bindColumn("role_id", $this->role_id, PDO::PARAM_INT);
+                $stmt->bindColumn("user_id", $this->user_id, PDO::PARAM_INT);
                 if ($stmt->fetch(PDO::FETCH_BOUND)) {
                     return true;
                 } else {
@@ -84,6 +86,31 @@ class Person extends DB
         } catch (PDOException $e) {
             return -1;
         }
+    }
+
+    function getConferenceManger($token)
+    {
+        $result = $this->getRole($token);
+        if ($result == true and $this->role_id == 4) {
+            $confManger = new ConferenceManager($this->user_id);
+            return $confManger;
+        } else {
+            return $result;
+        }
+    }
+
+    function getReviewer($token)
+    {
+        if ($result = $this->getRole($token) == 1) {
+            return new Reviewer($this->user_id);
+        } else {
+            return $result;
+        }
+    }
+
+    function getTrackChair($token)
+    {
+
     }
 
     function isConferenceManager()
