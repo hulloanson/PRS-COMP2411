@@ -10,7 +10,8 @@ class ConferenceManager extends PrivilegedUser
 
     private function getRandTrackChair()
     {
-        $sql = "SELECT id FROM Track_Chair ORDER BY rand() LIMIT 1";
+        $sql = "SELECT Track_Chair.id AS 'id' FROM Track_Chair, Account
+                WHERE Account.id = Track_Chair.id ORDER BY rand() LIMIT 1";
 
         try {
             $stmt = $this->conn->prepare($sql);
@@ -32,7 +33,9 @@ class ConferenceManager extends PrivilegedUser
     private function getRandReviewers()
     {
         $reviewerIds = array();
-        $sql = "SELECT id FROM Reviewer ORDER BY rand() LIMIT 3";
+        $sql = "SELECT Reviewer.id AS 'id' FROM Reviewer, Account
+                WHERE Account.invalidated = FALSE AND Account.id = Reviewer.id
+                ORDER BY rand() LIMIT 3";
 
         try {
             $stmt = $this->conn->prepare($sql);
@@ -260,9 +263,111 @@ class ConferenceManager extends PrivilegedUser
         }
     }
 
-    function addTrackChair()
+    function addTrackChair($trackChair)
     {
+        $rowCount = array();
+        $accSql = "INSERT INTO Account (email, password, role_id, title, first_name, last_name, phone,
+                    fax, department, gender, address, city, country)
+                   VALUES (:email, :passwordd, 2, :title, :firstName, :lastName, :phone, :fax,
+                        :department, :gender, :address, :city, :country)";
 
+        $trackChairSql = "INSERT INTO Track_Chair (id) VALUES (:accId)";
+
+        if (!empty($trackChair['areas'])) {
+            $areaSql = "INSERT INTO Account_Area (area_id, acc_id) VALUES";
+
+            for ($i = 0; $i < sizeof($trackChair['areas']); $i++) {
+                if ($i != 0) {
+                    $areaSql .= ",";
+                }
+                $areaSql .= " (:areaId" . $i . ", :reviewerId)";
+            }
+
+            $areaSql .= ";";
+        }
+
+        if (!empty($trackChair['organisations'])) {
+            $orgSql = "INSERT INTO Account_organisation (org_id, acc_id) VALUES";
+
+            for ($i = 0; $i < sizeof($trackChair['organisations']); $i++) {
+                if ($i != 0) {
+                    $orgSql .= ",";
+                }
+                $orgSql .= " (:orgId" . $i . ", :reviewerId)";
+            }
+
+            $orgSql .= ";";
+        }
+
+        try {
+            $this->conn->beginTransaction();
+
+            $accStmt = $this->conn->prepare($accSql);
+
+            $accStmt->bindValue(":email", $trackChair['email']);
+            $accStmt->bindValue(":password", $trackChair['password']);
+            $accStmt->bindValue(":title", $trackChair['title']);
+            $accStmt->bindValue(":firstName", $trackChair['firstName']);
+            $accStmt->bindValue(":lastName", $trackChair['lastName']);
+            $accStmt->bindValue(":phone", $trackChair['phone']);
+            $accStmt->bindValue(":fax", $trackChair['fax']);
+            $accStmt->bindValue(":department", $trackChair['department']);
+            $accStmt->bindValue(":gender", $trackChair['gender']);
+            $accStmt->bindValue(":address", $trackChair['address']);
+            $accStmt->bindValue(":city", $trackChair['city']);
+            $accStmt->bindValue(":country", $trackChair['country']);
+
+            if ($accStmt->execute()) {
+                $accId = $this->conn->lastInsertId();
+            } else {
+                $this->conn->rollBack();
+                return -1;
+            }
+
+            $trackChairStmt = $this->conn->prepare($trackChairSql);
+
+            $trackChairStmt->bindValue(":accId", $accId, PDO::PARAM_INT);
+
+            if ($trackChairStmt->execute()) {
+                $reviewerId = $this->conn->lastInsertId();
+            } else {
+                $this->conn->rollBack();
+                return -1;
+            }
+
+            if (!empty($trackChair['areas'])) {
+                $areaStmt = $this->conn->prepare($areaSql);
+
+                $areaStmt->bindValue(":reviewerId", $reviewerId, PDO::PARAM_INT);
+                for ($i = 0; $i < sizeof($trackChair['areas']); $i++) {
+                    $areaStmt->bindValue(":areaId" . $i, $trackChair['areas'][$i], PDO::PARAM_INT);
+                }
+                if (!($areaStmt->execute())) {
+                    array_push($rowCount, $areaStmt->rowCount());
+                    $this->conn->rollBack();
+                    return -1;
+                }
+            }
+
+            if (!empty($trackChair['organisations'])) {
+                $orgStmt = $this->conn->prepare($orgSql);
+
+                $orgStmt->bindValue(":reviewerId", $reviewerId, PDO::PARAM_INT);
+                for ($i = 0; $i < sizeof($trackChair['organisations']); $i++) {
+                    $orgStmt->bindValue(":orgId" . $i, $trackChair['organisations'][$i], PDO::PARAM_INT);
+                }
+                if (!($orgStmt->execute())) {
+                    $this->conn->rollBack();
+                    return -1;
+                }
+            }
+
+            return $reviewerId;
+
+        } catch (PDOException $e) {
+            $this->conn->rollBack();
+            return -1;
+        }
     }
 
     function removeTrackChair()
@@ -278,6 +383,135 @@ class ConferenceManager extends PrivilegedUser
     function removeConferenceChair()
     {
 
+    }
+
+    function addReviewer($reviewer)
+    {
+        $rowCount = array();
+        $accSql = "INSERT INTO Account (email, password, role_id, title, first_name, last_name, phone,
+                    fax, department, gender, address, city, country)
+                   VALUES (:email, :passwordd, 1, :title, :firstName, :lastName, :phone, :fax,
+                        :department, :gender, :address, :city, :country)";
+
+        $reviewerSql = "INSERT INTO Reviewer (id) VALUES (:accId)";
+
+        if (!empty($reviewer['areas'])) {
+            $areaSql = "INSERT INTO Account_Area (area_id, acc_id) VALUES";
+
+            for ($i = 0; $i < sizeof($reviewer['areas']); $i++) {
+                if ($i != 0) {
+                    $areaSql .= ",";
+                }
+                $areaSql .= " (:areaId" . $i . ", :reviewerId)";
+            }
+
+            $areaSql .= ";";
+        }
+
+        if (!empty($reviewer['organisations'])) {
+            $orgSql = "INSERT INTO Account_organisation (org_id, acc_id) VALUES";
+
+            for ($i = 0; $i < sizeof($reviewer['organisations']); $i++) {
+                if ($i != 0) {
+                    $orgSql .= ",";
+                }
+                $orgSql .= " (:orgId" . $i . ", :reviewerId)";
+            }
+
+            $orgSql .= ";";
+        }
+
+        try {
+            $this->conn->beginTransaction();
+
+            $accStmt = $this->conn->prepare($accSql);
+
+            $accStmt->bindValue(":email", $reviewer['email']);
+            $accStmt->bindValue(":password", $reviewer['password']);
+            $accStmt->bindValue(":title", $reviewer['title']);
+            $accStmt->bindValue(":firstName", $reviewer['firstName']);
+            $accStmt->bindValue(":lastName", $reviewer['lastName']);
+            $accStmt->bindValue(":phone", $reviewer['phone']);
+            $accStmt->bindValue(":fax", $reviewer['fax']);
+            $accStmt->bindValue(":department", $reviewer['department']);
+            $accStmt->bindValue(":gender", $reviewer['gender']);
+            $accStmt->bindValue(":address", $reviewer['address']);
+            $accStmt->bindValue(":city", $reviewer['city']);
+            $accStmt->bindValue(":country", $reviewer['country']);
+
+            if ($accStmt->execute()) {
+                $accId = $this->conn->lastInsertId();
+            } else {
+                $this->conn->rollBack();
+                return -1;
+            }
+
+            $reviewerStmt = $this->conn->prepare($reviewerSql);
+
+            $reviewerStmt->bindValue(":accId", $accId, PDO::PARAM_INT);
+
+            if ($reviewerStmt->execute()) {
+                $reviewerId = $this->conn->lastInsertId();
+            } else {
+                $this->conn->rollBack();
+                return -1;
+            }
+
+            if (!empty($reviewer['areas'])) {
+                $areaStmt = $this->conn->prepare($areaSql);
+
+                $areaStmt->bindValue(":reviewerId", $reviewerId, PDO::PARAM_INT);
+                for ($i = 0; $i < sizeof($reviewer['areas']); $i++) {
+                    $areaStmt->bindValue(":areaId" . $i, $reviewer['areas'][$i], PDO::PARAM_INT);
+                }
+                if (!($areaStmt->execute())) {
+                    array_push($rowCount, $areaStmt->rowCount());
+                    $this->conn->rollBack();
+                    return -1;
+                }
+            }
+
+            if (!empty($reviewer['organisations'])) {
+                $orgStmt = $this->conn->prepare($orgSql);
+
+                $orgStmt->bindValue(":reviewerId", $reviewerId, PDO::PARAM_INT);
+                for ($i = 0; $i < sizeof($reviewer['organisations']); $i++) {
+                    $orgStmt->bindValue(":orgId" . $i, $reviewer['organisations'][$i], PDO::PARAM_INT);
+                }
+                if (!($orgStmt->execute())) {
+                    $this->conn->rollBack();
+                    return -1;
+                }
+            }
+
+            return $reviewerId;
+
+        } catch (PDOException $e) {
+            $this->conn->rollBack();
+            return -1;
+        }
+    }
+
+    function removeReviewer($reviewerId)
+    {
+        $accountSql = "UPDATE Account SET invalidated = TRUE WHERE id = :userId";
+
+        try {
+            $accountStmt = $this->conn->prepare($accountSql);
+            $accountStmt->bindValue(":userId", $reviewerId, PDO::PARAM_INT);
+            if ($accountStmt->execute()) {
+                if ($count = $accountStmt->rowCount() == 0) {
+                    return 0;
+                } else {
+                    return $count;
+                }
+            } else {
+                return -1;
+            }
+
+        } catch (PDOException $e) {
+            return -1;
+        }
     }
 
 }

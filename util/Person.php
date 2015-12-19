@@ -11,7 +11,8 @@ class Person extends DB
         parent::__construct();
     }
 
-    function assignToken($email, $password) {
+    function assignToken($email, $password)
+    {
         $matched = $this->credMatch($email, $password);
         if ($matched > 0) {
             $token = Util::guidv4();
@@ -39,8 +40,9 @@ class Person extends DB
         }
     }
 
-    function getRole($token) {
-        $sql = "SELECT Session.user_id as 'user_id', Account.role_id as 'role_id' FROM Session, Account
+    function getRole($token)
+    {
+        $sql = "SELECT Session.user_id AS 'user_id', Account.role_id AS 'role_id' FROM Session, Account
                 WHERE Session.id = UNHEX(:token) AND Account.id = Session.user_id;";
 
         try {
@@ -64,8 +66,9 @@ class Person extends DB
         }
     }
 
-    function credMatch($email, $password) {
-        $sql = "SELECT count(*) as 'matched' FROM Account WHERE email = :email AND password = :passwordd;";
+    function credMatch($email, $password)
+    {
+        $sql = "SELECT count(*) AS 'matched' FROM Account WHERE email = :email AND password = :passwordd;";
 
         try {
             $stmt = $this->conn->prepare($sql);
@@ -110,27 +113,20 @@ class Person extends DB
 
     function getTrackChair($token)
     {
-
+        if ($result = $this->getRole($token) == 2) {
+            return new TrackChair($this->user_id);
+        } else {
+            return $result;
+        }
     }
 
-    function isConferenceManager()
+    function getConferenceChair($token)
     {
-        return ($this->role_id == 4);
-    }
-
-    function isReviewer()
-    {
-        return ($this->role_id === 1);
-    }
-
-    function isConferenceChair()
-    {
-        return ($this->role_id == 3);
-    }
-
-    function isTrackChair()
-    {
-        return ($this->role_id == 2);
+        if ($result = $this->getRole($token) == 3) {
+            return new TrackChair($token);
+        } else {
+            return $result;
+        }
     }
 
     function tokenToUserId($token)
